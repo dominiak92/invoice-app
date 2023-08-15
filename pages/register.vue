@@ -1,10 +1,11 @@
 <template>
   <div class="registerWrapper">
     <p class="title">Register</p>
+    <div class="text-center"></div>
     <div class="formWrapper">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
-          v-model="name"
+          v-model="registrationInfo.name"
           :counter="20"
           :rules="nameRules"
           label="Name"
@@ -12,14 +13,14 @@
         ></v-text-field>
 
         <v-text-field
-          v-model="email"
+          v-model="registrationInfo.email"
           :rules="emailRules"
           label="E-mail"
           required
         ></v-text-field>
 
         <v-text-field
-          v-model="password"
+          v-model="registrationInfo.password"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show1 ? 'text' : 'password'"
           name="input-10-1"
@@ -30,17 +31,22 @@
           @click:append="show1 = !show1"
         ></v-text-field>
 
-        <v-btn
-          :disabled="!valid"
-          color="black"
-          class="mr-4"
-          @click="validate"
-        >
+        <v-btn :disabled="!valid" color="black" class="mr-4" @click="validate">
           Submit
         </v-btn>
 
         <v-btn color="black" class="mr-4" @click="reset"> Reset </v-btn>
       </v-form>
+      <v-card>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="3000"
+          centered
+          color="red accent-2"
+        >
+        The user already exists, or another error has occurred. Try again
+        </v-snackbar>
+      </v-card>
     </div>
   </div>
 </template>
@@ -51,34 +57,43 @@ export default {
   data: () => ({
     show1: false,
     valid: true,
-
-    name: '',
-    // rules: {
-    //   required: (value) => !!value || 'Required.',
-    // },
+    snackbar: false,
+    registrationInfo: {
+      name: '',
+      email: '',
+      password: '',
+    },
     nameRules: [
       (v) => !!v || 'Name is required',
       (v) => (v && v.length <= 20) || 'Must be less than 20 characters',
     ],
-    email: '',
     emailRules: [
       (v) => !!v || 'E-mail is required',
       (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],    
-    password: '',
+    ],
     passwordRules: [
       (v) => !!v || 'Password is required',
-      (v) => (v && v.length <= 10) || 'Password must be less than 20 characters',
+      (v) =>
+        (v && v.length <= 10) || 'Password must be less than 20 characters',
     ],
-    
   }),
 
   methods: {
-    validate() {
-      this.$refs.form.validate()
+    async validate() {
+      try {
+        await this.registerUser(this.registrationInfo)
+      } catch {
+        this.snackbar = true
+      }
     },
     reset() {
       this.$refs.form.reset()
+    },
+    async registerUser(registrationInfo) {
+      await this.$axios.post('/users', registrationInfo)
+      this.$auth.loginWith('local', {
+        data: registrationInfo,
+      })
     },
   },
 }
@@ -86,16 +101,16 @@ export default {
 
 <style lang="scss" scoped>
 .registerWrapper {
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    .title {
-        font-size: 34px;
-        font-weight: 700;
-    }
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  .title {
+    font-size: 34px;
+    font-weight: 700;
+  }
   .formWrapper {
     width: 60vw;
   }

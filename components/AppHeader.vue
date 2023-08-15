@@ -3,19 +3,27 @@
     <div class="logo">
       <NuxtLink to="/"><fa :icon="['fa', 'file-invoice']" /></NuxtLink>
     </div>
-    <div class="menubtn login">
+    <div v-if="$auth.loggedIn" class="menubtn logout">
+      Logged in as {{ $auth.user.name }}
+      <v-btn class="logoutBtn" text @click="logout">Logout</v-btn>
+    </div>
+    <div v-else class="menubtn login">
       <fa :icon="['fa', 'right-to-bracket']" />
       <NuxtLink to="/login"><p>Login</p></NuxtLink>
     </div>
-    <div class="menubtn">
+    <div v-if="!$auth.loggedIn" class="menubtn">
       <fa :icon="['fa', 'user']" />
       <NuxtLink to="/register"><p>Register</p></NuxtLink>
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'AppHeader',
+  methods: {
+    ...mapActions('user', ['logout']),
+  },
 }
 </script>
 <style lang="scss">
@@ -57,6 +65,15 @@ export default {
   .login {
     margin-right: 0;
     margin-left: auto;
+  }
+  .logout {
+    display: flex;
+    width: 300px;
+    margin-right: 0;
+    margin-left: auto;
+    .logoutBtn {
+      color: white;
+    }
   }
 }
 </style>
