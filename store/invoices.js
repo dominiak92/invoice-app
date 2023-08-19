@@ -16,7 +16,20 @@ export const state = () => ({
       } catch (error) {
         console.error('Błąd podczas pobierania faktur:', error);
       }
+    },
+    async postInvoices({ dispatch }, newInvoice) {
+      try {
+        await this.$axios.$post('/invoices', newInvoice, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        dispatch('fetchInvoices')
+      } catch (error) {
+        console.error('Błąd podczas wysyłania faktur:', error);
+      }
     }
+
   };
   
   export const getters = {

@@ -1,5 +1,5 @@
 <template>
-  <div class="App">
+  <div class="App" data-app>
     <AppHeader />
     <nuxt />
   </div>
@@ -15,5 +15,6 @@ export default {
 .App {
   background-color: $white;
   font-family: 'League Spartan', sans-serif;
+  
 }
 </style>
