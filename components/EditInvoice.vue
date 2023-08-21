@@ -3,14 +3,14 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
-        dark
+        :style="{ color: '#7E88C3' }"
+        light
         rounded
-        color="#7C5DFA"
-        class="addBtn"
+        color="#F9FAFE"
+        large
         v-on="on"
       >
-        <div class="plus"><fa :icon="['fa', 'plus']" /></div>
-        New</v-btn
+        edit</v-btn
       >
     </template>
     <v-card class="dialog">
@@ -19,7 +19,7 @@
         <p>Go back</p>
       </div>
 
-      <h2 class="title">New Invoice</h2>
+      <h2 class="title">Edit invoice</h2>
       <p class="smallTitle">Bill From</p>
       <v-form ref="form" v-model="valid" lazy-validation class="formWrapper">
         <v-text-field
@@ -224,22 +224,10 @@
           dark
           rounded
           color="#EC5757"
-          @click="reset"
+          @click="dialog = false"
           v-on="on"
         >
-          reset</v-btn
-        >
-        <v-btn
-          v-bind="attrs"
-          :disabled="!valid"
-          :style="{ color: '#FFFFFF' }"
-          light
-          rounded
-          color="#373B53"
-          v-on="on"
-          @click="sendNewDraftInvoice"
-        >
-          Save as draft</v-btn
+          cancel</v-btn
         >
         <v-btn
           v-bind="attrs"
@@ -260,7 +248,13 @@
 
 <script>
 export default {
-  name: 'NewInvoice',
+  name: 'EditInvoice',
+  props: {
+    invoice: {
+      type: Object,
+      required: true,
+    },
+  },
 
   data() {
     return {
@@ -278,29 +272,29 @@ export default {
       newInvoice: {
         paymentDue: '',
         createdAt: new Date(),
-        description: 'Logo Concept',
-        paymentTerms: 15,
-        clientName: 'Alysa Werner',
-        clientEmail: 'seb@gmail.com',
+        description: '',
+        paymentTerms: null,
+        clientName: '',
+        clientEmail: '',
         status: '',
         senderAddress: {
-          street: 'Wladyslawa',
-          city: 'Sulechow',
-          postCode: '66-100',
-          country: 'Polska',
+          street: '',
+          city: '',
+          postCode: '',
+          country: '',
         },
         clientAddress: {
-          street: 'Sportowa',
-          city: 'Zielona Gora',
-          postCode: '53-2345',
-          country: 'Mozambik',
+          street: '',
+          city: '',
+          postCode: '',
+          country: '',
         },
         items: [
           {
-            name: 'Produkt',
-            quantity: 2,
-            price: 2,
-            total: 4,
+            name: '',
+            quantity: 0,
+            price: 0,
+            total: 0,
           },
         ],
         total: 4,
@@ -325,6 +319,24 @@ export default {
       },
       deep: true,
     },
+    // invoice(newVal) {
+    //   const dateObject = new Date(newVal.paymentDue)
+    //   const year = dateObject.getFullYear()
+    //   const month = String(dateObject.getMonth() + 1).padStart(2, '0')
+    //   const day = String(dateObject.getDate()).padStart(2, '0')
+    //   const formattedDate = `${year}-${month}-${day}`
+
+    //   this.newInvoice.paymentDue = formattedDate
+    //   this.newInvoice.description = newVal.description
+    //   this.newInvoice.paymentTerms = newVal.paymentTerms
+    //   this.newInvoice.clientName = newVal.clientName
+    //   this.newInvoice.clientEmail = newVal.clientEmail
+    //   this.newInvoice.status = newVal.status
+    //   this.newInvoice.senderAddress = newVal.senderAddress
+    //   this.newInvoice.clientAddress = newVal.clientAddress
+    //   this.newInvoice.items = newVal.items
+    //   this.newInvoice.total = newVal.total
+    // },
   },
   methods: {
     rules(value) {
@@ -337,7 +349,7 @@ export default {
     },
     dateRules(value) {
       const today = new Date()
-      today.setHours(0, 0, 0, 0) // Ustaw czas na północ
+      today.setHours(0, 0, 0, 0)
       const selectedDate = new Date(value)
 
       const baseRules = [

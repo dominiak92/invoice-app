@@ -1,8 +1,13 @@
 <template>
-  <div v-if="$auth.loggedIn" class="mainWrapper" >
+  <div v-if="$auth.loggedIn" class="mainWrapper">
     <IndexHeader />
     <div v-for="invoice in allInvoices" :key="invoice._id">
-      <nuxt-link :style="{ color: 'inherit', textDecoration: 'none' }" :invoice="invoice" :to="`/invoice/${invoice._id}`"><InvoiceCard :invoice="invoice" /></nuxt-link>
+      <nuxt-link
+        :style="{ color: 'inherit', textDecoration: 'none' }"
+        :invoice="invoice"
+        :to="`/invoice/${invoice._id}`"
+        ><InvoiceCard :invoice="invoice"
+      /></nuxt-link>
     </div>
   </div>
 </template>
@@ -14,7 +19,6 @@ import IndexHeader from '~/components/UI/IndexHeader.vue'
 export default {
   name: 'IndexPage',
   components: { InvoiceCard, IndexHeader },
-  
 
   computed: {
     ...mapGetters('invoices', ['allInvoices']),
@@ -23,7 +27,6 @@ export default {
   async mounted() {
     await this.$store.dispatch('invoices/fetchInvoices')
   },
-  
 }
 </script>
 <style lang="scss" scoped>
