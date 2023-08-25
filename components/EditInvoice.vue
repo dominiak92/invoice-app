@@ -237,7 +237,7 @@
           :style="{ color: '#FFFFFF' }"
           color="#7C5DFA"
           v-on="on"
-          @click="sendNewInvoice"
+          @click="editInvoice"
         >
           Save</v-btn
         >
@@ -297,7 +297,7 @@ export default {
             total: 0,
           },
         ],
-        total: 4,
+        total: 0,
       },
     }
   },
@@ -319,33 +319,53 @@ export default {
       },
       deep: true,
     },
-    // invoice(newVal) {
-    //   const dateObject = new Date(newVal.paymentDue)
-    //   const year = dateObject.getFullYear()
-    //   const month = String(dateObject.getMonth() + 1).padStart(2, '0')
-    //   const day = String(dateObject.getDate()).padStart(2, '0')
-    //   const formattedDate = `${year}-${month}-${day}`
+    invoice(newVal) {
+      this.newInvoice = JSON.parse(JSON.stringify(newVal))
 
-    //   this.newInvoice.paymentDue = formattedDate
-    //   this.newInvoice.description = newVal.description
-    //   this.newInvoice.paymentTerms = newVal.paymentTerms
-    //   this.newInvoice.clientName = newVal.clientName
-    //   this.newInvoice.clientEmail = newVal.clientEmail
-    //   this.newInvoice.status = newVal.status
-    //   this.newInvoice.senderAddress = newVal.senderAddress
-    //   this.newInvoice.clientAddress = newVal.clientAddress
-    //   this.newInvoice.items = newVal.items
-    //   this.newInvoice.total = newVal.total
-    // },
+      const dateObject = new Date(newVal.paymentDue)
+      const year = dateObject.getFullYear()
+      const month = String(dateObject.getMonth() + 1).padStart(2, '0')
+      const day = String(dateObject.getDate()).padStart(2, '0')
+      const formattedDate = `${year}-${month}-${day}`
+      this.newInvoice.paymentDue = formattedDate
+
+      //   this.newInvoice.paymentDue = formattedDate
+      //   this.newInvoice.description = newVal.description
+      //   this.newInvoice.paymentTerms = newVal.paymentTerms
+      //   this.newInvoice.clientName = newVal.clientName
+      //   this.newInvoice.clientEmail = newVal.clientEmail
+      //   this.newInvoice.status = newVal.status
+      //   this.newInvoice.senderAddress = newVal.senderAddress
+      //   this.newInvoice.clientAddress = newVal.clientAddress
+      //   this.newInvoice.items = newVal.items
+      //   this.newInvoice.total = newVal.total
+    },
   },
   methods: {
+    updateAddress(addressType, field, event) {
+      const newValue = event.target.value
+      this.newInvoice[addressType] = {
+        ...this.newInvoice[addressType],
+        [field]: newValue,
+      }
+    },
     rules(value) {
       const baseRules = [(v) => !!v || `${value} is required`]
       return baseRules
     },
     numRules(value) {
-      const baseRules = [(v) => (!!v && v > -1) || `${value} is not correct`]
+      const baseRules = [(v) => (!!v && v > 0) || `${value} is not correct`]
       return baseRules
+    },
+    async editInvoice() {
+      if (this.$refs.form.validate()) {
+        await this.$store.dispatch('invoices/editInvoice', {
+          id: this.$route.params.id,
+          newInvoice: this.newInvoice,
+        })
+        await this.$store.dispatch('invoices/getInvoice', this.$route.params.id)
+        this.dialog = false;
+      }
     },
     dateRules(value) {
       const today = new Date()
@@ -377,30 +397,6 @@ export default {
         total: 0,
       })
       this.$refs.form.resetValidation()
-    },
-
-    async sendNewInvoice() {
-      if (this.$refs.form.validate()) {
-        this.newInvoice.status = 'pending'
-        // await console.log(this.newInvoice)
-        await this.$store.dispatch(
-          'invoices/postInvoices',
-          JSON.stringify(this.newInvoice)
-        )
-        this.dialog = false
-        // await console.log(JSON.stringify(this.newInvoice))
-      }
-    },
-
-    async sendNewDraftInvoice() {
-      if (this.$refs.form.validate()) {
-        this.newInvoice.status = 'draft'
-        await this.$store.dispatch(
-          'invoices/postInvoices',
-          JSON.stringify(this.newInvoice)
-        )
-        this.dialog = false
-      }
     },
 
     reset() {

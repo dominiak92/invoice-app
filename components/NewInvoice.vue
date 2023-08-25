@@ -259,6 +259,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'NewInvoice',
 
@@ -307,6 +308,10 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters('invoices', ['allInvoices']),
+    ...mapGetters('invoices', ['filteredInvoices']),
+  },
   watch: {
     'newInvoice.items': {
       handler() {
@@ -326,13 +331,14 @@ export default {
       deep: true,
     },
   },
+  
   methods: {
     rules(value) {
       const baseRules = [(v) => !!v || `${value} is required`]
       return baseRules
     },
     numRules(value) {
-      const baseRules = [(v) => (!!v && v > -1) || `${value} is not correct`]
+      const baseRules = [(v) => (!!v && v > 0) || `${value} is not correct`]
       return baseRules
     },
     dateRules(value) {
@@ -375,6 +381,7 @@ export default {
           'invoices/postInvoices',
           JSON.stringify(this.newInvoice)
         )
+        await this.$store.dispatch('invoices/filterInvoices', this.filteredInvoices);
         this.dialog = false
         // await console.log(JSON.stringify(this.newInvoice))
       }
@@ -387,6 +394,7 @@ export default {
           'invoices/postInvoices',
           JSON.stringify(this.newInvoice)
         )
+        await this.$store.dispatch('invoices/filterInvoices', this.filteredInvoices);
         this.dialog = false
       }
     },

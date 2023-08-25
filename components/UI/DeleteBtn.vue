@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'DeleteBtn',
   props: {
@@ -67,9 +68,14 @@ export default {
       on: {},
     }
   },
+  computed: {
+    ...mapGetters('invoices', ['allInvoices']),
+    ...mapGetters('invoices', ['filteredInvoices']),
+  },
   methods: {
     async deleteInvoice(id) {
       await this.$store.dispatch('invoices/deleteInvoice', id)
+      await this.$store.dispatch('invoices/filterInvoices', this.filteredInvoices);
       this.$router.push('/')
     },
   },

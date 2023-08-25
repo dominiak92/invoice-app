@@ -1,7 +1,7 @@
 <template>
   <div v-if="$auth.loggedIn" class="mainWrapper">
     <IndexHeader />
-    <div v-for="invoice in allInvoices" :key="invoice._id">
+    <div v-for="invoice in filteredInvoices" :key="invoice._id">
       <nuxt-link
         :style="{ color: 'inherit', textDecoration: 'none' }"
         :invoice="invoice"
@@ -22,9 +22,11 @@ export default {
 
   computed: {
     ...mapGetters('invoices', ['allInvoices']),
+    ...mapGetters('invoices', ['filteredInvoices']),
   },
 
   async mounted() {
+    await this.$store.dispatch('invoices/filterInvoices', this.allInvoices);
     await this.$store.dispatch('invoices/fetchInvoices')
   },
 }
