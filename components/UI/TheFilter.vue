@@ -5,7 +5,7 @@
     :close-on-content-click="closeOnContentClick"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="#7C5DFA" dark v-bind="attrs" v-on="on"
+      <v-btn :disabled="allInvoices.length === 0" color="#7C5DFA" dark v-bind="attrs" v-on="on"
         >Filter<fa class="icon" :icon="['fa', 'caret-down']"
       /></v-btn>
     </template>
@@ -28,44 +28,27 @@ export default {
   data: () => ({
     items: [{ title: 'Pending' }, { title: 'Paid' }, { title: 'Draft' }],
     closeOnContentClick: false,
-    selectedStatuses: [],
   }),
 
   computed: {
-    ...mapGetters('invoices', ['allInvoices']),
+    ...mapGetters('invoices', [
+      'allInvoices',
+      'filteredStatus',
+      'filteredInvoices',
+    ]),
   },
 
   async mounted() {
-    await this.$store.dispatch('invoices/fetchInvoices')
-    await this.$store.dispatch('invoices/filterInvoices', this.allInvoices);
+    await this.$store.dispatch('invoices/resetSelectedStatuses')
+    await this.$store.dispatch('invoices/resetFilteredInvoices')
   },
-  
+
   methods: {
     toggleStatus(status) {
-      const index = this.selectedStatuses.indexOf(status)
-      if (!this.selectedStatuses.includes(status)) {
-        this.selectedStatuses.push(status)
-      } else {
-        this.selectedStatuses.splice(index, 1)
-      }
-      this.$store.dispatch('invoices/setSelectedStatuses', this.selectedStatuses); // Aktualizacja wybranych statusów w magazynie
-    this.$store.dispatch('invoices/filterInvoices');
+      this.$store.dispatch('invoices/toggleStatus', status)
+      this.$store.dispatch('invoices/filterInvoices')
+      console.log(this.filteredInvoices)
     },
-    async filterInvoices() {
-    if (this.selectedStatuses.length === 0) {
-
-      await this.$store.dispatch('invoices/filterInvoices', this.allInvoices);
-
-    } else {
-      const filtered = this.allInvoices.filter((invoice) =>
-        this.selectedStatuses.includes(invoice.status)
-      );
-      await this.$store.dispatch(
-        'invoices/filterInvoices',
-        filtered.length === 0 ? this.allInvoices : filtered
-      );
-    }
-  },
   },
 }
 </script>

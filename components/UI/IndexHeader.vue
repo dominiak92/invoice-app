@@ -2,7 +2,7 @@
   <div class="indexHeader">
     <div class="invoices">
       <h2 class="title">Invoices</h2>
-      <p class="invNumber">{{ allInvoices.length }} invoices</p>
+      <p class="invNumber" >{{ allInvoices.length }} invoices</p>
     </div>
     <div class="filterNewBtn"><TheFilter /> <NewInvoice /></div>
   </div>
@@ -32,7 +32,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
+  min-width: 100vw;
   padding-top: 30px;
   padding-bottom: 30px;
   .invoices {

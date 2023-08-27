@@ -11,6 +11,7 @@
     <div class="statusWrapper">
       <p class="description">Status</p>
       <div
+        v-if="!isLoading"
         class="status"
         :class="{
           green: invoice.status === 'paid',
@@ -20,6 +21,7 @@
       >
         <fa class="icon" :icon="['fa', 'circle']" />{{ invoice.status }}
       </div>
+      <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
     </div>
     <div class="dataWrapper">
       <div class="idDescription">
@@ -127,7 +129,7 @@ import { mapGetters } from 'vuex'
 import EditInvoice from '~/components/EditInvoice.vue'
 import DeleteBtn from '~/components/UI/DeleteBtn.vue'
 export default {
-  components: { DeleteBtn, EditInvoice},
+  components: { DeleteBtn, EditInvoice },
   data() {
     return {
       attrs: {},
@@ -136,7 +138,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('invoices', ['invoice']),
+    ...mapGetters('invoices', ['invoice', 'isLoading']),
     updateInvoiceAsPaid() {
       return {
         id: this.$route.params.id,

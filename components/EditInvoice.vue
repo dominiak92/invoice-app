@@ -494,6 +494,9 @@ export default {
     }
   }
 }
+.v-messages__message {
+  color: #b3b3b3
+}
 
 .plus {
   background-color: white;
