@@ -8,7 +8,7 @@ export const actions = {
   
   logout() {
     try {
-      this.$router.push('/login')
+      this.$router.push('/')
       this.$auth.logout()
     } catch (error) {
       throw new Error('error')

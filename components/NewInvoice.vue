@@ -239,7 +239,7 @@
           v-on="on"
           @click="sendNewDraftInvoice"
         >
-          Save as draft</v-btn
+          draft</v-btn
         >
         <v-btn
           v-bind="attrs"

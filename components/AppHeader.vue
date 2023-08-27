@@ -4,8 +4,16 @@
       <NuxtLink to="/"><fa :icon="['fa', 'file-invoice']" /></NuxtLink>
     </div>
     <div v-if="$auth.loggedIn" class="menubtn logout">
-      Logged in as {{ $auth.user.name }}
-      <v-btn class="logoutBtn" text @click="logout">Logout</v-btn>
+      Logged as {{ $auth.user.name }}!
+      <v-btn
+        plain
+        elevation="13"
+        color="red"
+        class="logoutBtn"
+        text
+        @click="logout"
+        >Logout</v-btn
+      >
     </div>
     <div v-else class="menubtn login">
       <fa :icon="['fa', 'right-to-bracket']" />
@@ -61,6 +69,7 @@ export default {
     align-items: center;
     border-left: 2px solid $line;
     color: white;
+    text-align: center;
   }
   .login {
     margin-right: 0;
@@ -68,7 +77,7 @@ export default {
   }
   .logout {
     display: flex;
-    width: 300px;
+    width: 14rem;
     margin-right: 0;
     margin-left: auto;
     .logoutBtn {

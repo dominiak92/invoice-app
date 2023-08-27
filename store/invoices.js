@@ -135,7 +135,6 @@ export const actions = {
       const filteredItems = state.items.filter((invoice) =>
         state.selectedStatuses.includes(invoice.status)
       )
-      console.log(state.selectedStatuses)
       commit('FILTERED_INVOICES', filteredItems)
     } catch (error) {
       console.log(error)

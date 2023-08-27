@@ -9,15 +9,17 @@
           :style="{ color: 'inherit', textDecoration: 'none' }"
           :invoice="invoice"
           :to="`/invoice/${invoice._id}`"
-          ><InvoiceCard v-if="!isLoading" :invoice="invoice" />
-          <v-skeleton-loader
-            v-else
-            class="mx-auto"
-            width="320"
-            height="160"
-            type="list-item-three-line, table-heading"
-            margin="10"
-          ></v-skeleton-loader>
+          >
+            <InvoiceCard v-if="!isLoading" :invoice="invoice" />
+            <v-skeleton-loader
+              v-else
+              class="mx-auto"
+              width="320"
+              height="160"
+              type="list-item-three-line, table-heading"
+              margin="10"
+            ></v-skeleton-loader
+          >
         </nuxt-link>
       </div>
       <v-card>
@@ -98,5 +100,12 @@ export default {
       text-align: center;
     }
   }
+}
+.slide-fade-enter-active, .slide-fade-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-100px);
 }
 </style>

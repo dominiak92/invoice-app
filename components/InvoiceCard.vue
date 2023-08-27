@@ -116,6 +116,8 @@ export default {
       letter-spacing: -0.10000000149011612px;
       text-align: right;
       color: #858bb2;
+      word-break: break-word;
+      max-width: 6rem;
     }
     .status {
       display: flex;

@@ -1,11 +1,11 @@
 <template>
-  <div class="welcomeWrapper">
-    <img class="logo" src="~/assets/logo.png" />
-    <div class="description">
-      <h2>Welcome to the invoice app</h2>
-      <p>Please <strong>login</strong> to start and manage your invoices</p>
+    <div class="welcomeWrapper">
+      <img class="logo" src="~/assets/logo.png" />
+      <div class="description">
+        <h2>Welcome to the invoice app</h2>
+        <p>Please <strong>login</strong> to start and manage your invoices</p>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -16,9 +16,9 @@ export default {
     return {}
   },
 
-  mounted() {},
-
-  methods: {},
+  mounted() {
+    console.log('Komponent się renderuje')
+  },
 }
 </script>
 
@@ -36,8 +36,8 @@ export default {
     margin-top: 2rem;
     text-align: center;
     p {
-        margin-top: 0.2rem;
-        color: #888EB0;
+      margin-top: 0.2rem;
+      color: #888eb0;
     }
   }
 }

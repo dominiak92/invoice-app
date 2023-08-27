@@ -24,18 +24,26 @@
       <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
     </div>
     <div class="dataWrapper">
-      <div class="idDescription">
-        <p class="bold">#{{ $route.params.id.slice(-5).toUpperCase() }}</p>
-        <p class="description">{{ invoice.description }}</p>
+      <div>
+        <div v-if="!isLoading" class="idDescription">
+          <p class="bold">#{{ $route.params.id.slice(-5).toUpperCase() }}</p>
+          <p class="description">{{ invoice.description }}</p>
+        </div>
+        <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
       </div>
-
-      <div v-if="invoice.senderAddress" class="senderAddress">
-        <p class="description">{{ invoice.senderAddress.street }}</p>
-        <p class="description">{{ invoice.senderAddress.city }}</p>
-        <p class="description">{{ invoice.senderAddress.postCode }}</p>
-        <p class="description">{{ invoice.senderAddress.country }}</p>
-      </div>
-      <div class="gridWrapper">
+        <div v-if="invoice.senderAddress && !isLoading" class="senderAddress">
+          <p class="description">{{ invoice.senderAddress.street }}</p>
+          <p class="description">{{ invoice.senderAddress.city }}</p>
+          <p class="description">{{ invoice.senderAddress.postCode }}</p>
+          <p class="description">{{ invoice.senderAddress.country }}</p>
+        </div>
+        <v-skeleton-loader
+          v-else
+          width="6rem"
+          type="list-item-three-line"
+        ></v-skeleton-loader
+      >
+      <div v-if="!isLoading" class="gridWrapper">
         <div class="invoiceDate">
           <p class="description">Invoice Date</p>
           <p v-if="invoice.createdAt" class="bold">
@@ -79,30 +87,42 @@
           </p>
         </div>
       </div>
-      <div v-if="invoice" class="totalWrapper">
-        <div
-          v-for="invoice in invoice.items"
-          :key="invoice._id"
-          class="priceDetails"
-        >
-          <div class="totalLeftSide">
-            <p class="bold">{{ invoice.name }}</p>
-            <p class="boldGray">
-              {{ invoice.quantity }} x £{{ invoice.price.toFixed(2) }}
+      <v-skeleton-loader
+        v-else
+        type="table-heading, list-item-three-line, list-item-three-line"
+      ></v-skeleton-loader>
+      <div v-if="!isLoading" class="totalCard">
+        <div v-if="invoice" class="totalWrapper">
+          <div
+            v-for="invoice in invoice.items"
+            :key="invoice._id"
+            class="priceDetails"
+          >
+            <div class="totalLeftSide">
+              <p class="bold">{{ invoice.name }}</p>
+              <p class="boldGray">
+                {{ invoice.quantity }} x £{{ invoice.price.toFixed(2) }}
+              </p>
+            </div>
+            <p v-if="invoice.total" class="bold">
+              £{{ invoice.total.toFixed(2) }}
             </p>
           </div>
-          <p v-if="invoice.total" class="bold">
-            £{{ invoice.total.toFixed(2) }}
+        </div>
+        <div class="grandTotal">
+          <p class="totalTitle">Grand Total</p>
+          <p v-if="invoice.total" class="totalPrice">
+            £ {{ invoice.total.toFixed(2) }}
           </p>
         </div>
       </div>
-      <div class="grandTotal">
-        <p class="totalTitle">Grand Total</p>
-        <p v-if="invoice.total" class="totalPrice">
-          £ {{ invoice.total.toFixed(2) }}
-        </p>
-      </div>
+      <v-skeleton-loader v-else type="image"></v-skeleton-loader>
     </div>
+    <!-- <v-skeleton-loader
+      v-else
+      width="20.3rem"
+      type="table-heading, list-item-two-line, list-item-three-line, list-item-three-line, image"
+    ></v-skeleton-loader> -->
     <div class="invoiceFooter">
       <EditInvoice :invoice="invoice" />
       <DeleteBtn :invoice="invoice" />
@@ -226,6 +246,7 @@ export default {
     }
   }
   .description {
+    overflow-wrap: break-word;
     color: #858bb2;
     font-size: 0.8125rem;
     font-style: normal;
@@ -239,6 +260,7 @@ export default {
     background: #fff;
     padding: 1.5rem;
     .bold {
+      max-width: 10rem;
       color: $purpleblack;
       font-size: 0.9375rem;
       font-style: normal;
@@ -271,20 +293,24 @@ export default {
         grid-area: 2 / 1 / 3 / 2;
       }
       .billTo {
+        max-width: 10rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         grid-area: 1 / 2 / 3 / 3;
+        word-break: break-word; 
         .fullAddress {
           display: flex;
           flex-direction: column;
         }
       }
       .email {
+        max-width: 10rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         grid-area: 3 / 1 / 4 / 2;
+        overflow-wrap: break-word;
       }
     }
     .totalWrapper {
@@ -294,6 +320,7 @@ export default {
       padding: 1rem;
       display: flex;
       flex-direction: column;
+      word-break: break-word; 
 
       .priceDetails {
         display: flex;
@@ -351,4 +378,14 @@ export default {
   background-color: #fff;
   box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
 }
+
+.v-enter-active,
+    .v-leave-active {
+      transition: opacity 0.1s ease;
+    }
+
+    .v-enter-from,
+    .v-leave-to {
+      opacity: 0;
+    }
 </style>
