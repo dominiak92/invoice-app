@@ -10,16 +10,7 @@
           :invoice="invoice"
           :to="`/invoice/${invoice._id}`"
           >
-            <InvoiceCard v-if="!isLoading" :invoice="invoice" />
-            <v-skeleton-loader
-              v-else
-              class="mx-auto"
-              width="320"
-              height="160"
-              type="list-item-three-line, table-heading"
-              margin="10"
-            ></v-skeleton-loader
-          >
+            <InvoiceCard :invoice="invoice" />
         </nuxt-link>
       </div>
       <v-card>
@@ -90,7 +81,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   .wrapper {
     display: flex;
     flex-direction: column;

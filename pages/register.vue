@@ -6,7 +6,7 @@
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="registrationInfo.name"
-          :counter="20"
+          :counter="15"
           :rules="nameRules"
           label="Name"
           required
@@ -30,6 +30,16 @@
           counter
           @click:append="show1 = !show1"
         ></v-text-field>
+        <v-text-field
+          v-model="registrationInfo.passwordConfirmation"
+          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show2 ? 'text' : 'password'"
+          label="Confirm Password"
+          required
+          :rules="confirmPasswordRules"
+          @click:append="show2 = !show2"
+          @keyup.enter="validate"
+        ></v-text-field>
 
         <v-btn :disabled="!valid" color="black" class="mr-4" @click="validate">
           Submit
@@ -44,7 +54,7 @@
           centered
           color="red accent-2"
         >
-        The user already exists, or another error has occurred. Try again
+          The user already exists, or another error has occurred. Try again
         </v-snackbar>
       </v-card>
     </div>
@@ -54,36 +64,48 @@
 <script>
 export default {
   name: 'Register',
-  data: () => ({
-    show1: false,
-    valid: true,
-    snackbar: false,
-    registrationInfo: {
-      name: '',
-      email: '',
-      password: '',
-    },
-    nameRules: [
-      (v) => !!v || 'Name is required',
-      (v) => (v && v.length <= 20) || 'Must be less than 20 characters',
-    ],
-    emailRules: [
-      (v) => !!v || 'E-mail is required',
-      (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    passwordRules: [
-      (v) => !!v || 'Password is required',
-      (v) =>
-        (v && v.length <= 10) || 'Password must be less than 20 characters',
-    ],
-  }),
+  data() {
+    return {
+      show1: false,
+      show2: false,
+      valid: true,
+      snackbar: false,
+      registrationInfo: {
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
+      },
+      nameRules: [
+        (v) => !!v || 'Name is required',
+        (v) => (v && v.length <= 15) || 'Must be less than 15 characters',
+      ],
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        (v) => !/\s/.test(v) || 'E-mail cannot contain spaces',
+      ],
+      passwordRules: [
+        (v) => !!v || 'Password is required',
+        (v) =>
+          (v && v.length <= 20) || 'Password must be less than 20 characters',
+      ],
+      confirmPasswordRules: [
+        (v) => !!v || 'Confirmation is required',
+        (v) =>
+          (v && v === this.registrationInfo.password) || 'Passwords must match',
+      ],
+    }
+  },
 
   methods: {
     async validate() {
-      try {
-        await this.registerUser(this.registrationInfo)
-      } catch {
-        this.snackbar = true
+      if (this.$refs.form.validate()) {
+        try {
+          await this.registerUser(this.registrationInfo)
+        } catch {
+          this.snackbar = true
+        }
       }
     },
     reset() {
@@ -100,6 +122,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/mixins.scss';
+@import '../assets/breakpoints.scss';
 .registerWrapper {
   height: 90vh;
   display: flex;
@@ -113,6 +137,9 @@ export default {
   }
   .formWrapper {
     width: 60vw;
+    @include md {
+    width: 30vw;
+  }
   }
 }
 </style>

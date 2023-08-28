@@ -2,7 +2,7 @@
   <div class="indexHeader">
     <div class="invoices">
       <h2 class="title">Invoices</h2>
-      <p class="invNumber" >{{ allInvoices.length }} invoices</p>
+      <p class="invNumber">{{ allInvoices.length }} invoices</p>
     </div>
     <div class="filterNewBtn"><TheFilter /> <NewInvoice /></div>
   </div>
@@ -28,6 +28,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/breakpoints.scss';
+@import '../../assets/mixins.scss';
 .indexHeader {
   display: flex;
   justify-content: space-around;
@@ -35,19 +37,36 @@ export default {
   min-width: 100vw;
   padding-top: 30px;
   padding-bottom: 30px;
+  @include md {
+    width: 62rem;
+    justify-content: space-around;
+  }
   .invoices {
     .title {
       font-size: 24px;
       font-weight: 700;
+      @include md {
+        font-size: 2.25rem;
+      }
     }
     .invNumber {
       font-weight: 500;
       color: $gray;
+      @include md {
+        font-size: 0.9rem;
+      }
     }
   }
   .filter {
     margin-right: auto;
     margin-left: 0;
+  }
+  .filterNewBtn {
+    @include md {
+      width: 13rem;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 .plus {

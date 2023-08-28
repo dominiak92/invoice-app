@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" light width="600px">
+  <v-dialog v-model="dialog" light transition="slide-x-transition" width="600px">
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
@@ -220,6 +220,7 @@
       </v-form>
       <div class="actions">
         <v-btn
+          class="btn"
           v-bind="attrs"
           dark
           rounded
@@ -230,6 +231,7 @@
           reset</v-btn
         >
         <v-btn
+          class="btn"
           v-bind="attrs"
           :disabled="!valid"
           :style="{ color: '#FFFFFF' }"
@@ -242,6 +244,7 @@
           draft</v-btn
         >
         <v-btn
+          class="btn"
           v-bind="attrs"
           :disabled="!valid"
           light
@@ -331,7 +334,7 @@ export default {
       deep: true,
     },
   },
-  
+
   methods: {
     rules(value) {
       const baseRules = [(v) => !!v || `${value} is required`]
@@ -381,7 +384,10 @@ export default {
           'invoices/postInvoices',
           JSON.stringify(this.newInvoice)
         )
-        await this.$store.dispatch('invoices/filterInvoices', this.filteredInvoices);
+        await this.$store.dispatch(
+          'invoices/filterInvoices',
+          this.filteredInvoices
+        )
         this.dialog = false
         // await console.log(JSON.stringify(this.newInvoice))
       }
@@ -394,7 +400,10 @@ export default {
           'invoices/postInvoices',
           JSON.stringify(this.newInvoice)
         )
-        await this.$store.dispatch('invoices/filterInvoices', this.filteredInvoices);
+        await this.$store.dispatch(
+          'invoices/filterInvoices',
+          this.filteredInvoices
+        )
         this.dialog = false
       }
     },
@@ -410,6 +419,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/breakpoints.scss';
+@import '../assets/mixins.scss';
 .dialog {
   padding: 1.2rem;
   .title {
@@ -450,6 +461,12 @@ export default {
     display: flex;
     justify-content: space-between;
     gap: 0.5 rem;
+    .btn {
+      @include md{
+        width: 10rem;
+        font-size: 0.9rem;
+      }
+    }
   }
   .cityPostalCountry {
     display: grid;

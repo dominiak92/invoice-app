@@ -20,9 +20,10 @@
           :rules="passwordRules"
           counter
           @click:append="show1 = !show1"
+          @keyup.enter="validate"
         ></v-text-field>
 
-        <v-btn :disabled="!valid" color="black" class="mr-4" @click="validate">
+        <v-btn :disabled="!valid" color="black" class="mr-4" @click="validate" @keyup.enter="validate">
           Submit
         </v-btn>
 
@@ -83,6 +84,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '../assets/mixins.scss';
+@import '../assets/breakpoints.scss';
 .loginWrapper {
   height: 90vh;
   display: flex;
@@ -96,6 +99,9 @@ export default {
   }
   .formWrapper {
     width: 60vw;
+    @include md {
+    width: 30vw;
+  }
   }
 }
 </style>

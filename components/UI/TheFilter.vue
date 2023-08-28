@@ -47,7 +47,6 @@ export default {
     toggleStatus(status) {
       this.$store.dispatch('invoices/toggleStatus', status)
       this.$store.dispatch('invoices/filterInvoices')
-      console.log(this.filteredInvoices)
     },
   },
 }

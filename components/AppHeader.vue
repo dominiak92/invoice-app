@@ -4,7 +4,11 @@
       <NuxtLink to="/"><fa :icon="['fa', 'file-invoice']" /></NuxtLink>
     </div>
     <div v-if="$auth.loggedIn" class="menubtn logout">
-      Logged as {{ $auth.user.name }}!
+      <div class="loggedName">
+        <p class="underlined underline-clip">
+          Logged as {{ $auth.user.name }}!
+        </p>
+      </div>
       <v-btn
         plain
         elevation="13"
@@ -35,6 +39,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '../assets/breakpoints.scss';
+@import '../assets/mixins.scss';
 .header {
   width: 100%;
   height: 72px;
@@ -70,6 +76,23 @@ export default {
     border-left: 2px solid $line;
     color: white;
     text-align: center;
+    .underlined {
+      /*   background: red; */
+      position: relative;
+    }
+    .underline-clip:after {
+      content: '';
+      position: absolute;
+      top: 95%;
+      width: 120%;
+      aspect-ratio: 3 / 1;
+      left: 50%;
+      transform: translate(-50%, 0);
+      border-radius: 50%;
+      border: 2px solid #9277FF;
+      /* Use a clip-path to hide and show the bits you want */
+      clip-path: polygon(0 0, 50% 50%, 100% 0);
+    }
   }
   .login {
     margin-right: 0;
@@ -80,6 +103,11 @@ export default {
     width: 14rem;
     margin-right: 0;
     margin-left: auto;
+    @include md {
+      .loggedName {
+        word-break: break-word;
+      }
+    }
     .logoutBtn {
       color: white;
     }

@@ -9,20 +9,41 @@
       </NuxtLink>
     </div>
     <div class="statusWrapper">
-      <p class="description">Status</p>
-      <div
-        v-if="!isLoading"
-        class="status"
-        :class="{
-          green: invoice.status === 'paid',
-          orange: invoice.status === 'pending',
-          gray: invoice.status === 'draft',
-        }"
-      >
-        <fa class="icon" :icon="['fa', 'circle']" />{{ invoice.status }}
+      <div class="descriptionIcon">
+        <p class="description">Status</p>
+        <div
+          v-if="!isLoading"
+          class="status"
+          :class="{
+            green: invoice.status === 'paid',
+            orange: invoice.status === 'pending',
+            gray: invoice.status === 'draft',
+          }"
+        >
+          <fa class="icon" :icon="['fa', 'circle']" />{{ invoice.status }}
+        </div>
+        <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
       </div>
-      <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
+      <div class="statusBtns">
+        <EditInvoice :invoice="invoice" />
+        <DeleteBtn :invoice="invoice" />
+
+        <v-btn
+          v-bind="attrs"
+          light
+          rounded
+          :style="{ color: '#FFFFFF' }"
+          color="#7C5DFA"
+          large
+          :disabled="invoice.status === 'paid'"
+          v-on="on"
+          @click="updateInvoice"
+        >
+          mark as paid</v-btn
+        >
+      </div>
     </div>
+
     <div class="dataWrapper">
       <div>
         <div v-if="!isLoading" class="idDescription">
@@ -31,18 +52,17 @@
         </div>
         <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
       </div>
-        <div v-if="invoice.senderAddress && !isLoading" class="senderAddress">
-          <p class="description">{{ invoice.senderAddress.street }}</p>
-          <p class="description">{{ invoice.senderAddress.city }}</p>
-          <p class="description">{{ invoice.senderAddress.postCode }}</p>
-          <p class="description">{{ invoice.senderAddress.country }}</p>
-        </div>
-        <v-skeleton-loader
-          v-else
-          width="6rem"
-          type="list-item-three-line"
-        ></v-skeleton-loader
-      >
+      <div v-if="invoice.senderAddress && !isLoading" class="senderAddress">
+        <p class="description">{{ invoice.senderAddress.street }}</p>
+        <p class="description">{{ invoice.senderAddress.city }}</p>
+        <p class="description">{{ invoice.senderAddress.postCode }}</p>
+        <p class="description">{{ invoice.senderAddress.country }}</p>
+      </div>
+      <v-skeleton-loader
+        v-else
+        width="6rem"
+        type="list-item-three-line"
+      ></v-skeleton-loader>
       <div v-if="!isLoading" class="gridWrapper">
         <div class="invoiceDate">
           <p class="description">Invoice Date</p>
@@ -182,6 +202,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '../../assets/breakpoints.scss';
+@import '../../assets/mixins.scss';
 .invoiceWrapper {
   display: flex;
   flex-direction: column;
@@ -219,6 +241,22 @@ export default {
     justify-content: space-around;
     gap: 6rem;
     align-items: center;
+    box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+    .descriptionIcon {
+      display: flex;
+      justify-content: space-around;
+      gap: 8rem;
+      align-items: center;
+    }
+    @include md {
+      width: 43rem;
+    }
+    .statusBtns {
+      display: none;
+      @include md {
+        display: flex;
+      }
+    }
     .status {
       display: flex;
       justify-content: center;
@@ -259,6 +297,8 @@ export default {
     border-radius: 0.5rem;
     background: #fff;
     padding: 1.5rem;
+    box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+
     .bold {
       max-width: 10rem;
       color: $purpleblack;
@@ -298,7 +338,7 @@ export default {
         flex-direction: column;
         gap: 0.5rem;
         grid-area: 1 / 2 / 3 / 3;
-        word-break: break-word; 
+        word-break: break-word;
         .fullAddress {
           display: flex;
           flex-direction: column;
@@ -320,7 +360,7 @@ export default {
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      word-break: break-word; 
+      word-break: break-word;
 
       .priceDetails {
         display: flex;
@@ -380,12 +420,12 @@ export default {
 }
 
 .v-enter-active,
-    .v-leave-active {
-      transition: opacity 0.1s ease;
-    }
+.v-leave-active {
+  transition: opacity 0.1s ease;
+}
 
-    .v-enter-from,
-    .v-leave-to {
-      opacity: 0;
-    }
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

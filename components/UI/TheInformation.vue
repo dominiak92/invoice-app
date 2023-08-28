@@ -1,6 +1,6 @@
 <template>
   <div class="welcomeWrapper">
-    <img class="logo" src="~/assets/invoice-welcome.png" />
+    <img class="image" src="~/assets/invoice-welcome.png" />
     <div class="description">
       <h2>There is nothing here!</h2>
       <p>
@@ -26,6 +26,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/breakpoints.scss";
+@import "../../assets/mixins.scss";
 .welcomeWrapper {
   display: flex;
   flex-direction: column;
@@ -33,12 +35,19 @@ export default {
   align-items: center;
   min-height: 30vh;
   padding: 3rem;
-  .logo {
+  
+  .image {
     max-width: 60vw;
+    @include md {
+        width: 40vw;
+    }
   }
   .description {
     margin-top: 2rem;
     text-align: center;
+    @include md {
+        font-size: 1.3rem;
+    }
     p {
         margin-top: 0.2rem;
         color: #888EB0;
