@@ -1,7 +1,6 @@
 {
-  "name": "invoice-app-vue",
+  "name": "invoice-app",
   "version": "1.0.0",
-  "homepage": "https://dominiak92.github.io/invoice-app",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -11,9 +10,7 @@
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:prettier": "prettier --check .",
     "lint": "npm run lint:js && npm run lint:prettier",
-    "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
