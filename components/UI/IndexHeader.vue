@@ -1,6 +1,7 @@
 <template>
   <div class="indexHeader">
     <div class="invoices">
+      <div class="titleWrapper"></div>
       <h2 class="title">Invoices</h2>
       <p class="invNumber">{{ allInvoices.length }} invoices</p>
     </div>
@@ -45,6 +46,8 @@ export default {
     .title {
       font-size: 24px;
       font-weight: 700;
+      animation: myAnim 0.9s cubic-bezier(0.76, 0, 0.24, 1) 0s 1 normal forwards;
+      
       @include md {
         font-size: 2.25rem;
       }
@@ -81,5 +84,16 @@ export default {
   align-items: center;
   margin-right: 5px;
   margin-left: -8px;
+}
+@keyframes myAnim {
+	0% {
+		opacity: 0;
+		transform: translateX(-150px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 </style>

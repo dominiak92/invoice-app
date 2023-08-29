@@ -23,23 +23,37 @@
           @keyup.enter="validate"
         ></v-text-field>
 
-        <v-btn :disabled="!valid" color="black" class="mr-4" @click="validate" @keyup.enter="validate">
+        <v-btn
+          :disabled="!valid"
+          color="black"
+          class="mr-4"
+          @click="validate"
+          @keyup.enter="validate"
+        >
           Submit
         </v-btn>
 
         <v-btn color="black" class="mr-4" @click="reset"> Reset </v-btn>
-       
-      </v-form> <v-card>
-          <v-snackbar
-            v-model="snackbar"
-            :timeout="2000"
-            centered
-            color="red accent-2"
-          >
-            Login failed, please try again
-          </v-snackbar>
-        </v-card>
+      </v-form>
+      <v-card>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="2000"
+          centered
+          color="red accent-2"
+        >
+          Login failed, please try again
+        </v-snackbar>
+      </v-card>
     </div>
+    <v-progress-circular
+      v-if="loading"
+      class="progress"
+      :size="80"
+      :width="8"
+      color="#7C5DFA"
+      indeterminate
+    ></v-progress-circular>
   </div>
 </template>
 
@@ -47,6 +61,7 @@
 export default {
   name: 'Login',
   data: () => ({
+    loading: false,
     show1: false,
     valid: true,
     email: '',
@@ -64,6 +79,7 @@ export default {
   }),
   methods: {
     async validate() {
+      this.loading = true
       try {
         if (this.$refs.form.validate()) {
           await this.$auth.loginWith('local', {
@@ -76,6 +92,7 @@ export default {
       } catch {
         this.snackbar = true
       }
+      this.loading = false
     },
     reset() {
       this.$refs.form.reset()
@@ -96,12 +113,28 @@ export default {
   .title {
     font-size: 34px;
     font-weight: 700;
+    animation: myAnim 0.7s ease 0s 1 normal forwards;
   }
   .formWrapper {
     width: 60vw;
     @include md {
-    width: 30vw;
+      width: 30vw;
+    }
   }
+  .progress {
+    position: absolute;
+  }
+}
+
+@keyframes myAnim {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

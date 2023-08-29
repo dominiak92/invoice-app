@@ -45,24 +45,25 @@
     </div>
 
     <div class="dataWrapper">
-      <div>
+      <div class="idAddress">
         <div v-if="!isLoading" class="idDescription">
           <p class="bold">#{{ $route.params.id.slice(-5).toUpperCase() }}</p>
           <p class="description">{{ invoice.description }}</p>
         </div>
         <v-skeleton-loader v-else type="chip"></v-skeleton-loader>
+
+        <div v-if="invoice.senderAddress && !isLoading" class="senderAddress">
+          <p class="description">{{ invoice.senderAddress.street }}</p>
+          <p class="description">{{ invoice.senderAddress.city }}</p>
+          <p class="description">{{ invoice.senderAddress.postCode }}</p>
+          <p class="description">{{ invoice.senderAddress.country }}</p>
+        </div>
+        <v-skeleton-loader
+          v-else
+          width="6rem"
+          type="list-item-three-line"
+        ></v-skeleton-loader>
       </div>
-      <div v-if="invoice.senderAddress && !isLoading" class="senderAddress">
-        <p class="description">{{ invoice.senderAddress.street }}</p>
-        <p class="description">{{ invoice.senderAddress.city }}</p>
-        <p class="description">{{ invoice.senderAddress.postCode }}</p>
-        <p class="description">{{ invoice.senderAddress.country }}</p>
-      </div>
-      <v-skeleton-loader
-        v-else
-        width="6rem"
-        type="list-item-three-line"
-      ></v-skeleton-loader>
       <div v-if="!isLoading" class="gridWrapper">
         <div class="invoiceDate">
           <p class="description">Invoice Date</p>
@@ -129,6 +130,26 @@
             </p>
           </div>
         </div>
+        <div v-if="invoice" class="totalWrapperDesktop">
+          <div class="totalDescriptions">
+            <div class="itemName desc">Item Name</div>
+            <div class="qty desc">QTY.</div>
+            <div class="price desc">Price</div>
+            <div class="total desc">Total</div>
+          </div>
+          <div
+            v-for="invoice in invoice.items"
+            :key="invoice._id"
+            class="itemsWrapper"
+          >
+            <div class="priceDetails">
+              <div class="itemsName">{{ invoice.name }}</div>
+              <div class="itemsQty">{{ invoice.quantity }}</div>
+              <div class="itemsPrice">£{{ invoice.price.toFixed(2) }}</div>
+              <div class="itemsTotal">£{{ invoice.total.toFixed(2) }}</div>
+            </div>
+          </div>
+        </div>
         <div class="grandTotal">
           <p class="totalTitle">Grand Total</p>
           <p v-if="invoice.total" class="totalPrice">
@@ -138,11 +159,6 @@
       </div>
       <v-skeleton-loader v-else type="image"></v-skeleton-loader>
     </div>
-    <!-- <v-skeleton-loader
-      v-else
-      width="20.3rem"
-      type="table-heading, list-item-two-line, list-item-three-line, list-item-three-line, image"
-    ></v-skeleton-loader> -->
     <div class="invoiceFooter">
       <EditInvoice :invoice="invoice" />
       <DeleteBtn :invoice="invoice" />
@@ -226,6 +242,9 @@ export default {
       line-height: 0.9375rem; /* 100% */
       letter-spacing: -0.01563rem;
       cursor: pointer;
+      @include md {
+        margin-left: 3rem;
+      }
       .icon {
         font-size: 0.8rem;
         color: $violet;
@@ -247,6 +266,10 @@ export default {
       justify-content: space-around;
       gap: 8rem;
       align-items: center;
+      @include md {
+        justify-content: space-between;
+        gap: 1rem;
+      }
     }
     @include md {
       width: 43rem;
@@ -255,6 +278,7 @@ export default {
       display: none;
       @include md {
         display: flex;
+        gap: 1rem;
       }
     }
     .status {
@@ -298,6 +322,30 @@ export default {
     background: #fff;
     padding: 1.5rem;
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+    .idAddress {
+      @include md {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .idDescription {
+        @include md {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+      }
+      .senderAddress {
+        @include md {
+          text-align: right;
+          margin: 0;
+          line-height: 1.125rem;
+        }
+      }
+    }
+    @include md {
+      width: 43rem;
+    }
 
     .bold {
       max-width: 10rem;
@@ -320,6 +368,12 @@ export default {
       grid-column-gap: 0px;
       grid-row-gap: 0px;
       margin-top: 1.7rem;
+      @include md {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+      }
       .invoiceDate {
         display: flex;
         flex-direction: column;
@@ -339,6 +393,7 @@ export default {
         gap: 0.5rem;
         grid-area: 1 / 2 / 3 / 3;
         word-break: break-word;
+
         .fullAddress {
           display: flex;
           flex-direction: column;
@@ -351,16 +406,22 @@ export default {
         gap: 0.5rem;
         grid-area: 3 / 1 / 4 / 2;
         overflow-wrap: break-word;
+        @include md {
+          grid-area: 1 / 3 / 2 / 4;
+        }
       }
     }
     .totalWrapper {
-      width: 17.4375rem;
       border-radius: 0.5rem 0.5rem 0rem 0rem;
       background: #f9fafe;
       padding: 1rem;
       display: flex;
       flex-direction: column;
       word-break: break-word;
+      width: 100%;
+      @include md {
+        display: none;
+      }
 
       .priceDetails {
         display: flex;
@@ -376,6 +437,88 @@ export default {
           letter-spacing: -0.01563rem;
           color: #7e88c3;
           margin-top: 0.2rem;
+        }
+      }
+    }
+    .totalWrapperDesktop {
+      border-radius: 0.5rem 0.5rem 0rem 0rem;
+      background: #f9fafe;
+      padding: 2rem;
+      margin-top: 3rem;
+      width: 100%;
+      display: none;
+      @include md {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .totalDescriptions {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        .desc {
+          font-size: 0.8125rem;
+          font-style: normal;
+          font-weight: 500;
+          color: #7e88c3;
+        }
+
+        .itemName {
+          text-align: left;
+          grid-area: 1 / 1 / 2 / 2;
+        }
+        .qty {
+          text-align: right;
+          grid-area: 1 / 2 / 2 / 3;
+        }
+        .price {
+          text-align: right;
+          grid-area: 1 / 3 / 2 / 4;
+        }
+        .total {
+          text-align: right;
+          grid-area: 1 / 4 / 2 / 5;
+        }
+      }
+      .itemsWrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+
+        .priceDetails {
+          display: grid;
+          width: 100%;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: 1fr;
+          grid-column-gap: 0px;
+          grid-row-gap: 0px;
+          .itemsName {
+            font-size: 0.9375rem;
+            font-style: normal;
+            font-weight: 700;
+            grid-area: 1 / 1 / 2 / 2;
+          }
+          .itemsQty {
+            color: #7E88C3;
+            text-align: right;
+            grid-area: 1 / 2 / 2 / 3;
+          }
+          .itemsPrice {
+            color: #7E88C3;
+            text-align: right;
+            grid-area: 1 / 3 / 2 / 4;
+          }
+          .itemsTotal {
+            font-size: 0.9375rem;
+            font-style: normal;
+            font-weight: 700;
+            text-align: right;
+            grid-area: 1 / 4 / 2 / 5;
+          }
         }
       }
     }
@@ -417,6 +560,9 @@ export default {
   width: 100%;
   background-color: #fff;
   box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+  @include md {
+    display: none;
+  }
 }
 
 .v-enter-active,

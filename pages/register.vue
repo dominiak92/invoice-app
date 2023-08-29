@@ -58,6 +58,14 @@
         </v-snackbar>
       </v-card>
     </div>
+    <v-progress-circular
+      v-if="loading"
+      class="progress"
+      :size="80"
+      :width="8"
+      color="#7C5DFA"
+      indeterminate
+    ></v-progress-circular>
   </div>
 </template>
 
@@ -66,6 +74,7 @@ export default {
   name: 'Register',
   data() {
     return {
+      loading: false,
       show1: false,
       show2: false,
       valid: true,
@@ -100,6 +109,7 @@ export default {
 
   methods: {
     async validate() {
+      this.loading = true
       if (this.$refs.form.validate()) {
         try {
           await this.registerUser(this.registrationInfo)
@@ -107,6 +117,7 @@ export default {
           this.snackbar = true
         }
       }
+      this.loading = false;
     },
     reset() {
       this.$refs.form.reset()
@@ -134,6 +145,7 @@ export default {
   .title {
     font-size: 34px;
     font-weight: 700;
+    animation: myAnim 0.7s ease 0s 1 normal forwards;
   }
   .formWrapper {
     width: 60vw;
@@ -141,5 +153,20 @@ export default {
     width: 30vw;
   }
   }
+  .progress {
+    position: absolute;
+  }
+}
+
+@keyframes myAnim {
+	0% {
+		opacity: 0;
+		transform: translateY(-150px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 </style>
