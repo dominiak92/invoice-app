@@ -1,13 +1,15 @@
 <template>
   <div class="App" data-app>
+    <TheBackground />
     <AppHeader />
     <nuxt />
   </div>
 </template>
 <script>
 import AppHeader from '~/components/AppHeader.vue'
+import TheBackground from '~/components/UI/TheBackground.vue';
 export default {
-  components: { AppHeader },
+  components: { AppHeader, TheBackground },
 }
 </script>
 <style scoped lang="scss">
@@ -15,14 +17,12 @@ export default {
 @import '../assets/breakpoints.scss';
 @import '../assets/mixins.scss';
 .App {
-  background-color: $white;
-  height: 100vh;
   font-family: 'League Spartan', sans-serif;
+  height: 100%;
   @include xl {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 100%;
   }
   
 }

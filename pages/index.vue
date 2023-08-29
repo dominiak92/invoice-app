@@ -81,6 +81,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: all 0.2 ease;
   .wrapper {
     display: flex;
     flex-direction: column;

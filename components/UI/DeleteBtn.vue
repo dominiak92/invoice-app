@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog  v-model="dialog" light width="500">
+    <v-dialog v-model="dialog" light width="500">
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" dark rounded color="#EC5757" large v-on="on">
           delete</v-btn
@@ -22,6 +22,16 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
+
+          <v-progress-circular
+            v-if="isLoading"
+            :size="40"
+            :width="5"
+            :style="{ marginRight: '1.2rem' }"
+            color="#7C5DFA"
+            indeterminate
+          ></v-progress-circular>
+
           <v-btn
             v-bind="attrs"
             :style="{ color: '#7E88C3', marginRight: '1rem' }"
@@ -69,13 +79,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('invoices', ['allInvoices']),
-    ...mapGetters('invoices', ['filteredInvoices']),
+    ...mapGetters('invoices', ['allInvoices', 'filteredInvoices', 'isLoading']),
   },
   methods: {
     async deleteInvoice(id) {
       await this.$store.dispatch('invoices/deleteInvoice', id)
-      await this.$store.dispatch('invoices/filterInvoices', this.filteredInvoices);
+      await this.$store.dispatch(
+        'invoices/filterInvoices',
+        this.filteredInvoices
+      )
       this.$router.push('/')
     },
   },

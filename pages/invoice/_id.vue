@@ -230,6 +230,9 @@ export default {
     padding: 1rem;
     margin-bottom: 1rem;
     margin-top: 1rem;
+    @include xl {
+        width: 43rem;
+      }
     .backBtn {
       width: 5rem;
       display: flex;
@@ -244,6 +247,9 @@ export default {
       cursor: pointer;
       @include md {
         margin-left: 3rem;
+      }
+      @include xl {
+        margin-left: 0;
       }
       .icon {
         font-size: 0.8rem;
@@ -322,6 +328,9 @@ export default {
     background: #fff;
     padding: 1.5rem;
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+    @include md {
+      margin-bottom: 1rem;
+    }
     .idAddress {
       @include md {
         display: flex;

@@ -121,12 +121,14 @@ export const actions = {
 
   // DELETE invoice by id
   async deleteInvoice({ commit }, id) {
+    commit('SET_LOADING', true)
     try {
       await this.$axios.$delete(`/invoices/${id}`)
       commit('REMOVE_INVOICE', id)
     } catch (error) {
       console.error('Błąd podczas pobierania faktur:', error)
     }
+    commit('SET_LOADING', false)
   },
 
   // FILTER invoices by status
@@ -160,5 +162,6 @@ export const getters = {
   filteredInvoices: (state) => state.filteredItems,
   filteredStatus: (state) => state.selectedStatuses,
   invoice: (state) => state.invoice,
-  isLoading: (state) => state.isLoading
+  isLoading: (state) => state.isLoading,
+
 }

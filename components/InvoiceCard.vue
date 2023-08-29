@@ -62,8 +62,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/mixins.scss";
-@import "../assets/breakpoints.scss";
+@import '../assets/mixins.scss';
+@import '../assets/breakpoints.scss';
 .invoiceCard {
   width: 20.4375rem;
   height: 8.375rem;
@@ -75,10 +75,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  animation: myAnim 1s ease 0s 1 normal forwards;
   @include md {
     justify-content: space-between;
     width: 42rem;
     height: 4.5rem;
+  }
+  @include xl {
+    width: 45rem;
   }
   .cardLeftSide {
     height: 100%;
@@ -90,6 +94,9 @@ export default {
       align-items: center;
       width: 17rem;
       justify-content: space-between;
+    }
+    @include xl {
+      width: 19rem;
     }
 
     .invoiceId {
@@ -105,11 +112,11 @@ export default {
     }
     .totalDate {
       @include md {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      width: 100%;
-    }
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+      }
       .dueDate {
         font-size: 13px;
         font-weight: 500;
@@ -133,6 +140,9 @@ export default {
       align-items: center;
       width: 15rem;
       justify-content: space-between;
+    }
+    @include xl {
+      width: 16rem;
     }
     .green {
       background-color: #f5fdfa;
@@ -179,6 +189,32 @@ export default {
         display: flex;
       }
     }
+  }
+}
+.fade-out {
+  animation: fadeOutAnim 1.3s ease-out both;
+}
+
+@keyframes fadeOutAnim {
+  0% {
+    opacity: 1;
+
+  }
+
+  100% {
+    opacity: 0;
+
+  }
+}
+@keyframes myAnim {
+  0% {
+    opacity: 0;
+    transform: translateX(150px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 </style>
