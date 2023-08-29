@@ -36,11 +36,18 @@ export default {
     '@nuxtjs/fontawesome',
   ],
 
+  googleFonts: {
+    families: {
+      'League+Spartan': [500, 700],
+    },
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/google-fonts'
   ],
 
   fontawesome: {
