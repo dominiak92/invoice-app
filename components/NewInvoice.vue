@@ -302,12 +302,12 @@ export default {
         items: [
           {
             name: '',
-            quantity: 0,
-            price: 0,
-            total: 0,
+            quantity: null,
+            price: null,
+            total: null,
           },
         ],
-        total: 0,
+        total: null,
       },
     }
   },
