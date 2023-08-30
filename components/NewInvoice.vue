@@ -307,7 +307,7 @@ export default {
             total: null,
           },
         ],
-        total: null,
+        total: 0,
       },
     }
   },
