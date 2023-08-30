@@ -3,6 +3,9 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
+  router: {
+    trailingSlash: true, // Opcjonalnie, jeśli chcesz mieć końcowe ukośniki w adresach URL
+  },
   head: {
     titleTemplate: '%s - invoice-app',
     title: 'invoice-app',
