@@ -168,6 +168,7 @@ export default {
       @include md {
         justify-self: flex-end;
         text-align: left;
+        max-width: 4rem;
       }
     }
     .status {
