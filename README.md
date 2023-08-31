@@ -55,4 +55,4 @@ $ npm run generate
 
 ## Lessons Learned
 
-I improved my Nuxt2 working skills, working on forms, validation, conditional component rendering, working with Vuetify and Nuxt's built-in animations. The real challenge was configuring the API and database in MongoDB. Based on what I have created it will be easier to deploy to future projects.
+I improved my Nuxt2 working skills, working on forms, validation, good state managment using Vuex, conditional component rendering, working with Vuetify and Nuxt's built-in animations. The real challenge was configuring the API and database in MongoDB. Based on what I have created it will be easier to deploy to future projects.
