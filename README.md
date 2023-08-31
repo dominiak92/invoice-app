@@ -6,6 +6,15 @@
 
 This application provides a user-friendly platform for efficient invoice management. Users can register accounts and log in to perform tasks such as saving, deleting, updating statuses, filtering, and editing invoices. All data is securely stored in the database, ensuring reliability. The application is fully responsive for mobile, tablet and desktop devices.
 
+## Features
+
+- Registering a new user
+- Logging/Logout
+- Create a new invoice, add multiple products, save as draft
+- Editing an existing invoice
+- Change of status to paid
+- Deleting an existing invoice with a warning
+
 ## 🚀 Demo
 
 [Click here for demo on netlify](https://main--dazzling-bienenstitch-1eab4c.netlify.app/)
